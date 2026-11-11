@@ -5,16 +5,16 @@
 
 /**
  *
- * @author lalo07
+ * @author laloparrot
  */
-public class JPrincipal extends javax.swing.JFrame {
+public class JFMenu extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JPrincipal.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFMenu.class.getName());
 
     /**
-     * Creates new form JPrincipal
+     * Creates new form JFMenu
      */
-    public JPrincipal() {
+    public JFMenu() {
         initComponents();
     }
 
@@ -65,7 +65,7 @@ public class JPrincipal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new JPrincipal().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new JFMenu().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
