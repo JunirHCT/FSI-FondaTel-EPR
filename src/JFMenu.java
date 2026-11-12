@@ -1,21 +1,52 @@
+import java.awt.Color;
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author laloparrot
  */
 public class JFMenu extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFMenu.class.getName());
 
-    /**
-     * Creates new form JFMenu
-     */
+    Conexion cnx = new Conexion();
+    
+    String todo = "SELECT * FROM menu";
+    String categorias = "SELECT DISTINCT categoria FROM menu ORDER BY categoria";
+    String por_categoria = "SELECT * FROM menu WHERE categoria = '%s' ORDER BY nombre";
+
     public JFMenu() {
         initComponents();
+        setTitle("MENU");
+        setSize(828, 740);
+        setLocationRelativeTo(null);
+        getContentPane().setBackground(Color.decode("#262840"));
+        
+        TMenu.setSelectionBackground(Color.decode("#262840"));
+        TMenu.setSelectionForeground(java.awt.Color.WHITE);
+        jScrollPane1.getViewport().setBackground(Color.decode("#1A1B30"));
+
+        //encabezado
+        TMenu.getTableHeader().setForeground(Color.decode("#1A1B30"));
+        TMenu.getTableHeader().setFont(new java.awt.Font("Serif", java.awt.Font.BOLD, 14));
+        
+        
+
+        TMenu.setRowHeight(100);
+        
+
+        if (cnx.conectar("localhost", "fondatel", "root", "admin1234") == 1) {
+            cnx.entablar(todo, TMenu);
+            cnx.seleccionar(categorias, CBCategoria);
+        } else {
+            JOptionPane.showMessageDialog(this, "Sin conexión. La ventana se cerrará...");
+            System.exit(0);
+        }
+
     }
 
     /**
@@ -27,21 +58,97 @@ public class JFMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel1 = new javax.swing.JPanel();
+        jToolBar1 = new javax.swing.JToolBar();
+        BCompleto = new javax.swing.JButton();
+        CBCategoria = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TMenu = new javax.swing.JTable();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(26, 27, 48));
+
+        jToolBar1.setBackground(new java.awt.Color(102, 0, 102));
+        jToolBar1.setRollover(true);
+
+        BCompleto.setBackground(new java.awt.Color(153, 153, 255));
+        BCompleto.setForeground(new java.awt.Color(255, 255, 255));
+        BCompleto.setText("Completo");
+        BCompleto.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        BCompleto.setMaximumSize(new java.awt.Dimension(100, 84));
+        BCompleto.setMinimumSize(new java.awt.Dimension(100, 84));
+        BCompleto.setPreferredSize(new java.awt.Dimension(100, 84));
+        BCompleto.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        BCompleto.addActionListener(this::BCompletoActionPerformed);
+        jToolBar1.add(BCompleto);
+
+        CBCategoria.setBackground(new java.awt.Color(38, 40, 64));
+        CBCategoria.setForeground(new java.awt.Color(255, 255, 255));
+        CBCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        CBCategoria.setAutoscrolls(true);
+        CBCategoria.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Categoria", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
+        CBCategoria.setMaximumSize(new java.awt.Dimension(200, 64));
+        CBCategoria.setMinimumSize(new java.awt.Dimension(200, 64));
+        CBCategoria.setPreferredSize(new java.awt.Dimension(200, 64));
+        CBCategoria.addItemListener(this::CBCategoriaItemStateChanged);
+        jToolBar1.add(CBCategoria);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 778, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(46, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE))
         );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 100));
+
+        TMenu.setBackground(new java.awt.Color(26, 27, 48));
+        TMenu.setForeground(new java.awt.Color(169, 177, 214));
+        TMenu.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7"
+            }
+        ));
+        jScrollPane1.setViewportView(TMenu);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 810, 620));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BCompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BCompletoActionPerformed
+        cnx.entablar(todo, TMenu);
+ 
+//            //datos.add(0,"Todos");
+    }//GEN-LAST:event_BCompletoActionPerformed
+
+    private void CBCategoriaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CBCategoriaItemStateChanged
+        // TODO add your handling code here:
+        String cat = CBCategoria.getSelectedItem().toString();
+        String sql = String.format(por_categoria, cat);
+        if (cat.equals("todo")) {
+           cnx.entablar(todo, TMenu);
+        } else {
+            cnx.entablar(sql, TMenu);
+        }
+    }//GEN-LAST:event_CBCategoriaItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -69,5 +176,11 @@ public class JFMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BCompleto;
+    private javax.swing.JComboBox<String> CBCategoria;
+    private javax.swing.JTable TMenu;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }

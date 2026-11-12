@@ -356,24 +356,24 @@ public class Conexion {
     //-------- obtiene los bytes de un ImageIcon
     //--------------------------------------------------------------------------
     public FileInputStream ImagenBytes(ImageIcon imagen) {
-        FileInputStream res = null;
-        javax.swing.JFrame f = new javax.swing.JFrame();
-        BufferedImage buff = null;
-
+         FileInputStream res = null;
         try {
-            Image img = imagen.getImage();
-            buff = new BufferedImage(imagen.getIconWidth(), imagen.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+            BufferedImage buff = new BufferedImage(
+                    imagen.getIconWidth(),
+                    imagen.getIconHeight(),
+                    BufferedImage.TYPE_INT_RGB
+            );
+            Graphics2D g2 = buff.createGraphics();
+            g2.drawImage(imagen.getImage(), 0, 0, null);
+            g2.dispose();
 
-            Graphics2D ig2 = buff.createGraphics();
-            ig2.drawImage(img, 0, 0, f);
+            File tempFile = File.createTempFile("cartel_aux_", ".jpg");
+            tempFile.deleteOnExit();
+            ImageIO.write(buff, "jpg", tempFile);
 
-            File directorio = new File("c:\\tempo");
-            directorio.mkdirs();
-            String nombre = "c:\\tempo\\auxiliar.jpg";
-            ImageIO.write(buff, "JPEG", new File(nombre));
-            res = new FileInputStream(new File(nombre));
+            res = new FileInputStream(tempFile);
         } catch (IOException ex) {
-            System.out.println(ex.toString());
+            System.out.println("Error al procesar bytes de imagen: " + ex.getMessage());
         }
         return res;
     }

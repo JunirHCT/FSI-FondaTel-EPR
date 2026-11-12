@@ -6,35 +6,32 @@ import javax.swing.JOptionPane;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author lalo07
- * 
- * para control de acceso
- * que usario es cuaneo se abra frame diga que use es
+ *
+ * para control de acceso que usario es cuaneo se abra frame diga que use es
  */
-
 public class JPrincipal extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JPrincipal.class.getName());
 
     Conexion cnx = new Conexion();
-    
+
     String puesto = "SELECT puesto FROM empleados WHERE nom_usr = '%s' AND nip = '%s'";
-    
+
     public JPrincipal() {
         initComponents();
         setTitle("FONDATEL: Iniciar Sesion");
         setSize(526, 253);
         setLocationRelativeTo(null);
         getContentPane().setBackground(Color.decode("#262840"));
-        
+
         if (cnx.conectar("localhost", "fondatel", "root", "admin1234") == 0) {
             JOptionPane.showMessageDialog(this, "Sin conexión. La ventana se cerrará...");
             System.exit(0);
         }
-        
+
     }
 
     /**
@@ -117,17 +114,25 @@ public class JPrincipal extends javax.swing.JFrame {
     private void BAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BAceptarActionPerformed
         String user = TFUser.getText();
         String nip = PNIp.getText();
-        String name;
         
-        String sql = String.format(puesto, user, nip);
+
+        String sql = String.format(puesto, user, nip);// variable Global puesto = "SELECT puesto FROM empleados WHERE nom_usr = '%s' AND nip = '%s'";
         String tipo = cnx.obtenerDato(sql);
-        System.out.println("" + tipo);
-        
+        System.out.println("Puesto: " + tipo);
+
+        //Si las credenciales tan correctamos estrayemos su nombre
+        String nombre = "";
+        if (!tipo.isEmpty()) {
+            String sqlNombre = String.format("SELECT nombree FROM empleados WHERE nom_usr = '%s'", user);
+            nombre = cnx.obtenerDato(sqlNombre);
+            System.out.println("Nombre del empleado: " + nombre);
+        }
+
         switch (tipo.toLowerCase()) {
             case "mesero":
                 JFMesero mes = new JFMesero();
                 cnx.desconectar();
-                mes.obtenerNomUser(user);
+                mes.obtenerNomUser(nombre);
                 System.out.println(user);
                 this.dispose();
                 mes.setVisible(true);
@@ -135,7 +140,7 @@ public class JPrincipal extends javax.swing.JFrame {
             case "cocinero":
                 JFCocineros co = new JFCocineros();
                 cnx.desconectar();
-                co.obtenerNomUser(user);
+                co.obtenerNomUser(nombre);
                 System.out.println(user);
                 this.dispose();
                 co.setVisible(true);
@@ -148,15 +153,15 @@ public class JPrincipal extends javax.swing.JFrame {
             case "gerente":
                 JFGerente ger = new JFGerente();
                 cnx.desconectar();
-                ger.obtenerNomUser(user);
+                ger.obtenerNomUser(nombre);
                 System.out.println(user);
                 this.dispose();
                 ger.setVisible(true);
                 break;
-             case "cajero":
+            case "cajero":
                 JFCajeros car = new JFCajeros();
                 cnx.desconectar();
-                car.obtenerNomUser(user);
+                car.obtenerNomUser(nombre);
                 System.out.println(user);
                 this.dispose();
                 car.setVisible(true);
@@ -165,15 +170,15 @@ public class JPrincipal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Credenciales Incorrectas FACK");
                 break;
             default:
-                //throw new AssertionError();
+            //throw new AssertionError();
         }
-        
+
     }//GEN-LAST:event_BAceptarActionPerformed
 
     private void BCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BCancelarActionPerformed
-          JFMesero mes = new JFMesero();
-          this.dispose();;
-          mes.setVisible(true);
+        JFMesero mes = new JFMesero();
+        this.dispose();;
+        mes.setVisible(true);
     }//GEN-LAST:event_BCancelarActionPerformed
 
     /**

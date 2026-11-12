@@ -10,40 +10,41 @@ import javax.swing.table.DefaultTableModel;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author laloparrot
  */
 public class JFAlimentos extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFAlimentos.class.getName());
 
     Conexion cnx = new Conexion();
-    
-     ImageIcon cartel;
-    
+
+    ImageIcon cartel;
+
     public JFAlimentos() {
         initComponents();
         setTitle("Alimentos");
         setSize(1287, 486);
         setLocationRelativeTo(null);
         getContentPane().setBackground(Color.decode("#262840"));
-        
-        
+
         TAlimentos.setSelectionBackground(Color.decode("#262840"));
-        TAlimentos.setSelectionForeground(java.awt.Color.WHITE);    
+        TAlimentos.setSelectionForeground(java.awt.Color.WHITE);
         jScrollPane1.getViewport().setBackground(Color.decode("#1A1B30"));
-        
+
         //encabezado
         TAlimentos.getTableHeader().setForeground(Color.decode("#1A1B30"));
         TAlimentos.getTableHeader().setFont(new java.awt.Font("Serif", java.awt.Font.BOLD, 14));
- 
-        TAlimentos.setRowHeight(130);
-        
-        
+
+        TAlimentos.setRowHeight(100);
+
+        LID.setEnabled(false);
+        BEliminar.setEnabled(false);
+        BActualizar.setEnabled(false);
+
         if (cnx.conectar("localhost", "fondatel", "root", "admin1234") == 1) {
-            cnx.entablar("SELECT * FROM alimentos", TAlimentos, 8, 35, 30, 10, 30, 30, 30);
+            cnx.entablar("SELECT * FROM alimentos", TAlimentos, 8, 35, 30, 10, 40, 25, 25);
         } else {
             JOptionPane.showMessageDialog(this, "Sin conexión. La ventana se cerrará...");
             System.exit(0);
@@ -63,6 +64,10 @@ public class JFAlimentos extends javax.swing.JFrame {
         LUsuario = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         BRegistar = new javax.swing.JButton();
+        BActualizar = new javax.swing.JButton();
+        BAtras = new javax.swing.JButton();
+        BEliminar = new javax.swing.JButton();
+        BBorrar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -78,6 +83,8 @@ public class JFAlimentos extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         CBCategoria = new javax.swing.JComboBox<>();
         CBEstado = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        LID = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TAlimentos = new javax.swing.JTable();
@@ -119,6 +126,26 @@ public class JFAlimentos extends javax.swing.JFrame {
         BRegistar.addActionListener(this::BRegistarActionPerformed);
         jPanel2.add(BRegistar, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 0, -1, 60));
 
+        BActualizar.setBackground(new java.awt.Color(29, 209, 161));
+        BActualizar.setForeground(new java.awt.Color(26, 27, 48));
+        BActualizar.setText("Actualizar");
+        BActualizar.addActionListener(this::BActualizarActionPerformed);
+        jPanel2.add(BActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, -1, 60));
+
+        BAtras.setText("Atras");
+        BAtras.addActionListener(this::BAtrasActionPerformed);
+        jPanel2.add(BAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
+
+        BEliminar.setBackground(new java.awt.Color(29, 209, 161));
+        BEliminar.setForeground(new java.awt.Color(26, 27, 48));
+        BEliminar.setText("Eliminar");
+        BEliminar.addActionListener(this::BEliminarActionPerformed);
+        jPanel2.add(BEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 0, -1, 60));
+
+        BBorrar.setText("Borrar D");
+        BBorrar.addActionListener(this::BBorrarActionPerformed);
+        jPanel2.add(BBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, -1, -1));
+
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 1290, 60));
 
         jPanel4.setBackground(new java.awt.Color(0, 0, 153));
@@ -126,11 +153,11 @@ public class JFAlimentos extends javax.swing.JFrame {
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Estado: ");
-        jPanel4.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, -1, -1));
+        jPanel4.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, -1, -1));
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Descripcion:");
-        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 50, -1, -1));
+        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
 
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("IMG:");
@@ -138,7 +165,7 @@ public class JFAlimentos extends javax.swing.JFrame {
 
         LImagen.setBackground(new java.awt.Color(153, 204, 255));
         LImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel4.add(LImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 10, 122, 130));
+        jPanel4.add(LImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 30, 180, 200));
 
         TADescripcion.setBackground(new java.awt.Color(26, 27, 48));
         TADescripcion.setColumns(20);
@@ -146,43 +173,52 @@ public class JFAlimentos extends javax.swing.JFrame {
         TADescripcion.setRows(5);
         jScrollPane2.setViewportView(TADescripcion);
 
-        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 240, -1));
+        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 240, -1));
 
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Nombre:");
-        jPanel4.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+        jLabel5.setText("ID:");
+        jPanel4.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
         TFPrecio.setBackground(new java.awt.Color(26, 27, 48));
         TFPrecio.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel4.add(TFPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 240, 30));
+        jPanel4.add(TFPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, 240, 30));
 
         TFNombre.setBackground(new java.awt.Color(26, 27, 48));
         TFNombre.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel4.add(TFNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(102, 8, 240, 30));
+        jPanel4.add(TFNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 40, 240, 30));
 
         BNuevo.setBackground(new java.awt.Color(187, 154, 247));
         BNuevo.setForeground(new java.awt.Color(26, 27, 48));
         BNuevo.setText("Nueva");
         BNuevo.addActionListener(this::BNuevoActionPerformed);
-        jPanel4.add(BNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 150, 100, -1));
+        jPanel4.add(BNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 240, 100, -1));
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Precio:");
-        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
+        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
 
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Categoria: ");
-        jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, -1, -1));
+        jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
 
         CBCategoria.setBackground(new java.awt.Color(26, 27, 48));
         CBCategoria.setForeground(new java.awt.Color(26, 27, 48));
         CBCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Entrada", "Plato Principal", "Postre", "Bebida" }));
-        jPanel4.add(CBCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 200, 240, -1));
+        jPanel4.add(CBCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, 240, -1));
 
         CBEstado.setBackground(new java.awt.Color(26, 27, 48));
         CBEstado.setForeground(new java.awt.Color(26, 27, 48));
         CBEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "Agotado" }));
-        jPanel4.add(CBEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 240, 240, -1));
+        jPanel4.add(CBEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 270, 240, -1));
+
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Nombre:");
+        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
+
+        LID.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        LID.setForeground(new java.awt.Color(255, 255, 255));
+        LID.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel4.add(LID, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 100, 20));
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 540, 310));
 
@@ -221,24 +257,23 @@ public class JFAlimentos extends javax.swing.JFrame {
         String nom = TFNombre.getText().trim();
         String desc = TADescripcion.getText().trim();
         float precio = Float.parseFloat(TFPrecio.getText().trim());
-        
-        String cat  = CBCategoria.getSelectedItem().toString();
+
+        String cat = CBCategoria.getSelectedItem().toString();
         String est = CBEstado.getSelectedItem().toString();
-        
 
         if (nom.isEmpty() || desc.isEmpty() || cat.isEmpty() || est.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor completa la clave y el título.");
+            JOptionPane.showMessageDialog(this, "Por favor completa los campos faltantes.");
             return;
         }
 
         if (cartel == null) {
-            JOptionPane.showMessageDialog(this, "Debes seleccionar una imagen para el cartel.");
+            JOptionPane.showMessageDialog(this, "Debes seleccionar una imagen para el platillo.");
             return;
         }
 
         Alimentos al = new Alimentos(nom, desc, precio, cartel, cat, est);
         if (al.insertar(cnx) == 1) {
-            JOptionPane.showMessageDialog(this, "Película registrada correctamente");
+            JOptionPane.showMessageDialog(this, "Alimento registrada correctamente");
             cnx.entablar("SELECT * FROM alimentos", TAlimentos, 8, 35, 30, 10, 30, 30, 30);
         } else {
             JOptionPane.showMessageDialog(this, "No se pudo registrar la película");
@@ -260,16 +295,75 @@ public class JFAlimentos extends javax.swing.JFrame {
         DefaultTableModel modelo = (DefaultTableModel) TAlimentos.getModel();
 
         if (ren >= 0) {
+            LID.setText(modelo.getValueAt(ren, 0).toString());
             TFNombre.setText(modelo.getValueAt(ren, 1).toString());
             TADescripcion.setText(modelo.getValueAt(ren, 2).toString());
             TFPrecio.setText(modelo.getValueAt(ren, 3).toString());
             cartel = new ImageIcon(cnx.escalarImagen(((ImageIcon) modelo.getValueAt(ren, 4)).
-                getImage(), 194, 235));
+                    getImage(), 194, 235));
             LImagen.setIcon(cartel);
             CBCategoria.setSelectedItem(modelo.getValueAt(ren, 5).toString());
             CBEstado.setSelectedItem(modelo.getValueAt(ren, 6).toString());
         }
+        BRegistar.setEnabled(false);
+        BEliminar.setEnabled(true);
+        BActualizar.setEnabled(true);
     }//GEN-LAST:event_TAlimentosMousePressed
+
+    private void BActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BActualizarActionPerformed
+        int id = Integer.parseInt(LID.getText().trim());
+        String nom = TFNombre.getText().trim();
+        String desc = TADescripcion.getText().trim();
+        float precio = Float.parseFloat(TFPrecio.getText().trim());
+
+        String cat = CBCategoria.getSelectedItem().toString();
+        String est = CBEstado.getSelectedItem().toString();
+
+        if (nom.isEmpty() || desc.isEmpty() || cat.isEmpty() || est.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor completa los datos faltantes");
+            return;
+        }
+
+        if (cartel == null) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar una imagen para el platillo.");
+            return;
+        }
+
+        Alimentos al = new Alimentos(id, nom, desc, precio, cartel, cat, est);
+        if (al.actualizar(cnx) == 1) {
+            JOptionPane.showMessageDialog(this, "Alimento registrado correctamente");
+            cnx.entablar("SELECT * FROM alimentos", TAlimentos, 8, 35, 30, 10, 30, 30, 30);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo registrar la película");
+        }
+    }//GEN-LAST:event_BActualizarActionPerformed
+
+    private void BAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BAtrasActionPerformed
+        JFGerente ger = new JFGerente();
+        cnx.desconectar();
+        ger.obtenerNomUser("Pelayo Pelayo");
+        this.dispose();
+        ger.setVisible(true);
+    }//GEN-LAST:event_BAtrasActionPerformed
+
+    private void BEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BEliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BEliminarActionPerformed
+
+    private void BBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BBorrarActionPerformed
+        BRegistar.setEnabled(true);
+        LID.setText("");
+        TFNombre.setText("");
+        TADescripcion.setText("");
+        TFPrecio.setText("");
+        //CBCategoria. que inicialice sus opciones
+        CBCategoria.setSelectedIndex(0);
+        //CBEstado. igual
+        CBEstado.setSelectedIndex(0);
+        //LImagen borre la imagen y no el texto
+        LImagen.setIcon(null);
+        LImagen.setText("no img");
+    }//GEN-LAST:event_BBorrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -297,10 +391,15 @@ public class JFAlimentos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BActualizar;
+    private javax.swing.JButton BAtras;
+    private javax.swing.JButton BBorrar;
+    private javax.swing.JButton BEliminar;
     private javax.swing.JButton BNuevo;
     private javax.swing.JButton BRegistar;
     private javax.swing.JComboBox<String> CBCategoria;
     private javax.swing.JComboBox<String> CBEstado;
+    private javax.swing.JLabel LID;
     private javax.swing.JLabel LImagen;
     private javax.swing.JLabel LUsuario;
     private javax.swing.JTextArea TADescripcion;
@@ -313,6 +412,7 @@ public class JFAlimentos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
