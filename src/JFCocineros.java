@@ -1,36 +1,40 @@
 
 import java.awt.Color;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author laloparrot
  */
 public class JFCocineros extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFCocineros.class.getName());
 
     Conexion cnx = new Conexion();
-    
+
     public JFCocineros() {
         initComponents();
         setTitle("Cocineros");
         setSize(560, 510);
         setLocationRelativeTo(null);
         getContentPane().setBackground(Color.decode("#262840"));
-        
+
+        CBAlimentos.setEditable(false);
+
         if (cnx.conectar("localhost", "fondatel", "root", "admin1234") == 1) {
-            //cnx.entablar(Queries.all, TUsuarios);
+            cnx.entablar("SELECT nombre, observaciones, estadoo, descripcion FROM comandas", TComandas);
+            cnx.seleccionar("SELECT nombre FROM alimentos", CBAlimentos);
         } else {
             JOptionPane.showMessageDialog(this, "Sin conexión. La ventana se cerrará...");
             System.exit(0);
         }
-        
+
     }
 
     /**
@@ -41,13 +45,20 @@ public class JFCocineros extends javax.swing.JFrame {
     public void obtenerNomUser(String nombre) {
         LUsuario.setText("Cocinero: " + nombre);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         LUsuario = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        CBEstado = new javax.swing.JComboBox<>();
+        BGuardar = new javax.swing.JButton();
+        CBAlimentos = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TComandas = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -77,8 +88,59 @@ public class JFCocineros extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, -1));
 
+        jLabel4.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Estado:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, -1, 20));
+
+        jLabel5.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Alimento:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, 20));
+
+        CBEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ordenado", "preparando", "entregado", "devuelto", "cancelado" }));
+        getContentPane().add(CBEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 70, 130, -1));
+
+        BGuardar.setText("Guardar");
+        getContentPane().add(BGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 120, -1, -1));
+
+        CBAlimentos.setToolTipText("");
+        getContentPane().add(CBAlimentos, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 190, -1));
+
+        TComandas.setBackground(new java.awt.Color(26, 27, 48));
+        TComandas.setForeground(new java.awt.Color(169, 177, 214));
+        TComandas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7"
+            }
+        ));
+        TComandas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                TComandasMousePressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(TComandas);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 540, 330));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void TComandasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TComandasMousePressed
+        int ren = TComandas.getSelectedRow();
+        DefaultTableModel modelo = (DefaultTableModel) TComandas.getModel();
+
+        if (ren >= 0) {
+            CBAlimentos.setSelectedItem(modelo.getValueAt(ren, 0).toString());
+        }
+
+    }//GEN-LAST:event_TComandasMousePressed
 
     /**
      * @param args the command line arguments
@@ -106,7 +168,14 @@ public class JFCocineros extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BGuardar;
+    private javax.swing.JComboBox<String> CBAlimentos;
+    private javax.swing.JComboBox<String> CBEstado;
     private javax.swing.JLabel LUsuario;
+    private javax.swing.JTable TComandas;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

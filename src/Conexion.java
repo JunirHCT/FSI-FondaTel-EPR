@@ -73,7 +73,7 @@ public class Conexion {
 
             //agregar las columnas del resultado con su nombre
             for (int k = 1; k <= rsm.getColumnCount(); k++) {
-                modelo.addColumn(rsm.getColumnName(k).toUpperCase());
+                modelo.addColumn(rsm.getColumnLabel(k).toUpperCase());
             }
 
             //agregar renglones con los datos

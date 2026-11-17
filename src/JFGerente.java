@@ -16,17 +16,18 @@ public class JFGerente extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFGerente.class.getName());
 
     Conexion cnx = new Conexion();
+    public String name;
     
     public JFGerente() {
         initComponents();
         
         setTitle("Gerente");
-        setSize(560, 510);
+        setSize(848, 500);
         setLocationRelativeTo(null);
         getContentPane().setBackground(Color.decode("#262840"));
         
         if (cnx.conectar("localhost", "fondatel", "root", "admin1234") == 1) {
-            //cnx.entablar(Queries.all, TUsuarios);
+            cnx.entablar("SELECT * FROM ordenes WHERE DATE(fecha_hora) = CURDATE()", TGerente);
         } else {
             JOptionPane.showMessageDialog(this, "Sin conexión. La ventana se cerrará...");
             System.exit(0);
@@ -41,6 +42,7 @@ public class JFGerente extends javax.swing.JFrame {
     
     public void obtenerNomUser(String nombre) {
         LUsuario.setText("ADMINISTRADOR: " + nombre);
+        name = nombre;
     }
     
     @SuppressWarnings("unchecked")
@@ -50,6 +52,10 @@ public class JFGerente extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         LUsuario = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TGerente = new javax.swing.JTable();
+        BMenu = new javax.swing.JButton();
+        BPedidos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -58,30 +64,55 @@ public class JFGerente extends javax.swing.JFrame {
 
         LUsuario.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         LUsuario.setForeground(new java.awt.Color(255, 255, 255));
-        LUsuario.setText("ADMINISTRADOR: Pelayo");
+        LUsuario.setText("ADMINISTRADOR: ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(143, Short.MAX_VALUE)
+                .addContainerGap(327, Short.MAX_VALUE)
                 .addComponent(LUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(105, 105, 105))
+                .addGap(221, 221, 221))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(16, 16, 16)
                 .addComponent(LUsuario)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 850, -1));
 
         jButton1.setText("Alimentos");
         jButton1.addActionListener(this::jButton1ActionPerformed);
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, 50));
+
+        TGerente.setBackground(new java.awt.Color(26, 27, 48));
+        TGerente.setForeground(new java.awt.Color(169, 177, 214));
+        TGerente.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(TGerente);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 820, 320));
+
+        BMenu.setText("MENU");
+        BMenu.addActionListener(this::BMenuActionPerformed);
+        getContentPane().add(BMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 90, 50));
+
+        BPedidos.setText("PEDIDOS");
+        BPedidos.addActionListener(this::BPedidosActionPerformed);
+        getContentPane().add(BPedidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, 90, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -92,6 +123,23 @@ public class JFGerente extends javax.swing.JFrame {
         this.dispose();
         al.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void BMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BMenuActionPerformed
+        JFMenu menu = new JFMenu();
+        cnx.desconectar();
+        menu.obtenerNomUser(name);
+        this.dispose();
+        menu.setVisible(true);
+    }//GEN-LAST:event_BMenuActionPerformed
+
+    private void BPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BPedidosActionPerformed
+        // TODO add your handling code here:
+        JFPedidos ped = new JFPedidos();
+        cnx.desconectar();
+        ped.obtenerNomUser(name, 1);
+        this.dispose();
+        ped.setVisible(true);
+    }//GEN-LAST:event_BPedidosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -119,8 +167,12 @@ public class JFGerente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BMenu;
+    private javax.swing.JButton BPedidos;
     private javax.swing.JLabel LUsuario;
+    private javax.swing.JTable TGerente;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

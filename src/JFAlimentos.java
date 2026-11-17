@@ -331,10 +331,10 @@ public class JFAlimentos extends javax.swing.JFrame {
 
         Alimentos al = new Alimentos(id, nom, desc, precio, cartel, cat, est);
         if (al.actualizar(cnx) == 1) {
-            JOptionPane.showMessageDialog(this, "Alimento registrado correctamente");
+            JOptionPane.showMessageDialog(this, "Alimento Actualizado correctamente");
             cnx.entablar("SELECT * FROM alimentos", TAlimentos, 8, 35, 30, 10, 30, 30, 30);
         } else {
-            JOptionPane.showMessageDialog(this, "No se pudo registrar la película");
+            JOptionPane.showMessageDialog(this, "No se pudo Actualizar el Alimento");
         }
     }//GEN-LAST:event_BActualizarActionPerformed
 

@@ -1,3 +1,4 @@
+
 import java.awt.Color;
 import javax.swing.JOptionPane;
 
@@ -15,6 +16,9 @@ public class JFMenu extends javax.swing.JFrame {
 
     Conexion cnx = new Conexion();
     
+    public String name;
+    
+
     String todo = "SELECT * FROM menu";
     String categorias = "SELECT DISTINCT categoria FROM menu ORDER BY categoria";
     String por_categoria = "SELECT * FROM menu WHERE categoria = '%s' ORDER BY nombre";
@@ -25,7 +29,7 @@ public class JFMenu extends javax.swing.JFrame {
         setSize(828, 740);
         setLocationRelativeTo(null);
         getContentPane().setBackground(Color.decode("#262840"));
-        
+
         TMenu.setSelectionBackground(Color.decode("#262840"));
         TMenu.setSelectionForeground(java.awt.Color.WHITE);
         jScrollPane1.getViewport().setBackground(Color.decode("#1A1B30"));
@@ -33,11 +37,8 @@ public class JFMenu extends javax.swing.JFrame {
         //encabezado
         TMenu.getTableHeader().setForeground(Color.decode("#1A1B30"));
         TMenu.getTableHeader().setFont(new java.awt.Font("Serif", java.awt.Font.BOLD, 14));
-        
-        
 
         TMenu.setRowHeight(100);
-        
 
         if (cnx.conectar("localhost", "fondatel", "root", "admin1234") == 1) {
             cnx.entablar(todo, TMenu);
@@ -48,6 +49,13 @@ public class JFMenu extends javax.swing.JFrame {
         }
 
     }
+
+    public void obtenerNomUser(String nombre) {
+         
+        name = nombre;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,6 +70,7 @@ public class JFMenu extends javax.swing.JFrame {
         jToolBar1 = new javax.swing.JToolBar();
         BCompleto = new javax.swing.JButton();
         CBCategoria = new javax.swing.JComboBox<>();
+        BAtras = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TMenu = new javax.swing.JTable();
 
@@ -95,20 +104,29 @@ public class JFMenu extends javax.swing.JFrame {
         CBCategoria.addItemListener(this::CBCategoriaItemStateChanged);
         jToolBar1.add(CBCategoria);
 
+        BAtras.setText("Atras");
+        BAtras.addActionListener(this::BAtrasActionPerformed);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 778, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 685, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addComponent(BAtras)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(BAtras)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 100));
@@ -135,7 +153,7 @@ public class JFMenu extends javax.swing.JFrame {
 
     private void BCompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BCompletoActionPerformed
         cnx.entablar(todo, TMenu);
- 
+
 //            //datos.add(0,"Todos");
     }//GEN-LAST:event_BCompletoActionPerformed
 
@@ -143,12 +161,21 @@ public class JFMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
         String cat = CBCategoria.getSelectedItem().toString();
         String sql = String.format(por_categoria, cat);
-        if (cat.equals("todo")) {
-           cnx.entablar(todo, TMenu);
+        if (cat.equals("Todos")) {
+            cnx.entablar(todo, TMenu);
         } else {
             cnx.entablar(sql, TMenu);
         }
     }//GEN-LAST:event_CBCategoriaItemStateChanged
+
+    private void BAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BAtrasActionPerformed
+        JFGerente cli = new JFGerente();
+        cnx.desconectar();
+        cli.obtenerNomUser(name);
+        System.out.println("nombre: " + name);
+        this.dispose();
+        cli.setVisible(true);
+    }//GEN-LAST:event_BAtrasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -176,6 +203,7 @@ public class JFMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BAtras;
     private javax.swing.JButton BCompleto;
     private javax.swing.JComboBox<String> CBCategoria;
     private javax.swing.JTable TMenu;

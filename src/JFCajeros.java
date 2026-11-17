@@ -16,6 +16,10 @@ public class JFCajeros extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFCajeros.class.getName());
 
      Conexion cnx = new Conexion();
+     String sql = "SELECT folio AS Folio, mesas_numero AS Mesa, silla AS Silla, "
+           + "nombrec AS Cliente, nombree AS Mesero, nombre AS Alimento, "
+           + "precio AS Precio, fecha_hora AS Fecha "
+           + "FROM tickets ORDER BY folio DESC";
     
     public JFCajeros() {
         initComponents();
@@ -26,7 +30,7 @@ public class JFCajeros extends javax.swing.JFrame {
         getContentPane().setBackground(Color.decode("#262840"));
         
         if (cnx.conectar("localhost", "fondatel", "root", "admin1234") == 1) {
-            //cnx.entablar(Queries.all, TUsuarios);
+            cnx.entablar(sql, TTickets);
         } else {
             JOptionPane.showMessageDialog(this, "Sin conexión. La ventana se cerrará...");
             System.exit(0);
@@ -50,6 +54,8 @@ public class JFCajeros extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         LUsuario = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TTickets = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -65,7 +71,7 @@ public class JFCajeros extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(157, Short.MAX_VALUE)
+                .addContainerGap(457, Short.MAX_VALUE)
                 .addComponent(LUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(139, 139, 139))
         );
@@ -77,7 +83,24 @@ public class JFCajeros extends javax.swing.JFrame {
                 .addGap(19, 19, 19))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 850, -1));
+
+        TTickets.setBackground(new java.awt.Color(26, 27, 48));
+        TTickets.setForeground(new java.awt.Color(169, 177, 214));
+        TTickets.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(TTickets);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 840, 320));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -109,6 +132,8 @@ public class JFCajeros extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LUsuario;
+    private javax.swing.JTable TTickets;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
